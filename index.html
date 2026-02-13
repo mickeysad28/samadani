@@ -46,7 +46,6 @@ body {
     background-repeat: no-repeat;
     opacity: 0;
     transition: opacity 1.5s ease-in-out;
-    will-change: opacity;
 }
 .slide.active {
     opacity: 1;
@@ -77,7 +76,7 @@ body {
 
 /* Button */
 button {
-    margin-top: 30px;
+    margin-top: 20px;
     padding: 14px 35px;
     border: none;
     border-radius: 30px;
@@ -151,7 +150,7 @@ button:hover {
 <body>
 
 <audio id="bgMusic" loop>
-    <source src="Asset/ed-sheeran.mpeg" type="audio/mpeg">
+    <source src="Asset/ed-sheeran.mp3" type="audio/mpeg">
 </audio>
 
 <div class="header">
@@ -168,16 +167,27 @@ button:hover {
     <p class="typing" id="typing"></p>
 
     <button onclick="surprise()">Click Me Butterfly 🦋</button>
+    <br>
+    <button id="musicBtn" onclick="playMusic()">Play Our Song 🎵</button>
 </div>
 
 <div id="loveLetter"></div>
 
 <script>
-// Background music on first click
-document.body.addEventListener("click", function() {
-    const music = document.getElementById("bgMusic");
-    if (music.paused) music.play().catch(() => {});
-}, { once: true });
+// Music play function
+const music = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicBtn");
+
+function playMusic() {
+    music.play().then(() => {
+        musicBtn.innerText = "Playing ❤️";
+        setTimeout(() => {
+            musicBtn.style.display = "none";
+        }, 1500);
+    }).catch(() => {
+        alert("Tap again to allow music 🎵");
+    });
+}
 
 // Slideshow
 const slides = document.querySelectorAll(".slide");
@@ -241,14 +251,9 @@ function surprise() {
     letter.innerHTML = `
     <h2>My Beautiful Butterfly 🦋</h2>
     <p>If you are reading this right now, it means you pressed that button… but what you truly pressed was my heart.</p>
-    <p>Before you came into my life, I was existing — not truly living. I didn’t realize something was missing until you walked in and filled that space so naturally. You didn’t force anything. You didn’t demand anything. You simply loved… and that love changed me.</p>
-    <p>You are the calm in my chaos. The warmth in my coldest nights. The quiet strength that keeps me standing when life feels heavy.</p>
-    <p>There are nights I sit and think about how easily we could have never met. And that thought alone brings tears to my eyes — because I cannot imagine this world without you in it.</p>
-    <p>You have healed wounds you never even saw. You have touched parts of my soul I didn’t know were hurting. Loving you has made me softer. It has made me stronger. It has made me better.</p>
-    <p>I know I am not perfect. I have flaws. I have fears. I have moments where I fall short. But my love for you has never been weak. It has never been temporary. It has never been unsure.</p>
-    <p>If one day you ever feel like you are not enough, I need you to remember this — through my eyes, you are rare. You are extraordinary. You are irreplaceable.</p>
+    <p>Before you came into my life, I was existing — not truly living. I didn’t realize something was missing until you walked in and filled that space so naturally.</p>
+    <p>You are the calm in my chaos. The warmth in my coldest nights.</p>
     <p>You are my butterfly — delicate yet powerful, gentle yet unbreakable.</p>
-    <p>And as long as my heart continues to beat, it will beat with your name written across it.</p>
     <p><b>Forever and always yours ❤️</b></p>
     <button onclick="document.getElementById('loveLetter').style.display='none'">Close 💕</button>
     `;
