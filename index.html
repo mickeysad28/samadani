@@ -149,6 +149,7 @@ button:hover {
 
 <body>
 
+<!-- Background Music -->
 <audio id="bgMusic" loop>
     <source src="Asset/ed-sheeran.mp3" type="audio/mpeg">
 </audio>
@@ -168,32 +169,37 @@ button:hover {
 
     <button onclick="surprise()">Click Me Butterfly 🦋</button>
     <br>
-    <button id="musicBtn" onclick="playMusic()">Play Our Song 🎵</button>
+    <button id="musicBtn">Play Our Song 🎵</button>
 </div>
 
 <div id="loveLetter"></div>
 
 <script>
-// Music play function
+// Music Button Logic
 const music = document.getElementById("bgMusic");
 const musicBtn = document.getElementById("musicBtn");
 
-function playMusic() {
+musicBtn.addEventListener("click", () => {
+    music.volume = 0;
     music.play().then(() => {
+        // Smooth fade in
+        let fade = setInterval(() => {
+            if (music.volume < 1) music.volume += 0.05;
+            else clearInterval(fade);
+        }, 200);
+
         musicBtn.innerText = "Playing ❤️";
-        setTimeout(() => {
-            musicBtn.style.display = "none";
-        }, 1500);
+        setTimeout(() => musicBtn.style.display = "none", 1500);
     }).catch(() => {
         alert("Tap again to allow music 🎵");
     });
-}
+});
 
 // Slideshow
 const slides = document.querySelectorAll(".slide");
 let index = 0;
 function showSlide() {
-    slides.forEach((slide) => slide.classList.remove("active"));
+    slides.forEach(slide => slide.classList.remove("active"));
     slides[index].classList.add("active");
     index = (index + 1) % slides.length;
 }
@@ -205,11 +211,8 @@ let typingIndex = 0;
 const typingElem = document.getElementById("typing");
 const typeInterval = setInterval(() => {
     if (typingIndex < typingText.length) {
-        typingElem.textContent += typingText[typingIndex];
-        typingIndex++;
-    } else {
-        clearInterval(typeInterval);
-    }
+        typingElem.textContent += typingText[typingIndex++];
+    } else clearInterval(typeInterval);
 }, 50);
 
 // Floating Hearts
@@ -235,7 +238,7 @@ function createButterfly() {
 setInterval(createButterfly, 5000);
 
 // Sparkle Cursor
-document.addEventListener("mousemove", function(e) {
+document.addEventListener("mousemove", e => {
     const sparkle = document.createElement("div");
     sparkle.className = "sparkle";
     sparkle.style.left = e.clientX + "px";
@@ -251,7 +254,7 @@ function surprise() {
     letter.innerHTML = `
     <h2>My Beautiful Butterfly 🦋</h2>
     <p>If you are reading this right now, it means you pressed that button… but what you truly pressed was my heart.</p>
-    <p>Before you came into my life, I was existing — not truly living. I didn’t realize something was missing until you walked in and filled that space so naturally.</p>
+    <p>Before you came into my life, I was existing — not truly living. You didn’t force anything, you didn’t demand anything. You simply loved… and that love changed me.</p>
     <p>You are the calm in my chaos. The warmth in my coldest nights.</p>
     <p>You are my butterfly — delicate yet powerful, gentle yet unbreakable.</p>
     <p><b>Forever and always yours ❤️</b></p>
